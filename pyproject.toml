@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vertexenum"
+version = "0.1.0"
+description = "Vertex enumeration of convex polyhedra (Ax <= b) via David Avis's lrslib; Python port of the R package vertexenum"
+readme = "README.md"
+license = "GPL-2.0-or-later"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24"]
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = ["vertexenum"]
+
+[tool.setuptools.package-data]
+vertexenum = ["csrc/*.c", "csrc/*.h"]
