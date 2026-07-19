@@ -267,6 +267,19 @@ gcc -O2 -shared -static -Isrc/vertexenum/csrc -o src/vertexenum/_vertexenum.dll 
 
 (Drop `-static` on Linux/macOS and use `-o ..._vertexenum.so`; add `-fPIC`.)
 
+### Pypi publication
+- bump version
+- test publication to testPyPi
+  - ```python
+    uv publish --publish-url https://test.pypi.org/legacy/ --token <TOKEN> dist/*
+    ```
+- verify
+- perform publication to testPyPi
+  - ```python
+    uv publish --token <TOKEN> dist/*
+    ```
+- verify
+
 ### Tests
 
 `tests/test_vertexenum.py` checks polytopes with known vertex sets (unit

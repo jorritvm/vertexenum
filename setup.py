@@ -8,6 +8,7 @@ the parts of build_ext that assume one: no PyInit export symbol, and a plain
 import os
 
 from setuptools import Extension, setup
+from setuptools.command.bdist_wheel import bdist_wheel
 from setuptools.command.build_ext import build_ext
 
 CSRC = os.path.join("src", "vertexenum", "csrc")
@@ -37,6 +38,15 @@ class build_ctypes_ext(build_ext):
         return super().get_ext_filename(ext_name)
 
 
+class bdist_ctypes_wheel(bdist_wheel):
+    def get_tag(self):
+        # The DLL is loaded via ctypes and does not touch the CPython ABI, so
+        # one wheel per platform serves every Python version (the >=3.10 floor
+        # comes from requires-python metadata, not the tag).
+        _, _, plat = super().get_tag()
+        return "py3", "none", plat
+
+
 extension = CTypesExtension(
     "vertexenum._vertexenum",
     sources=[
@@ -51,5 +61,5 @@ extension = CTypesExtension(
 
 setup(
     ext_modules=[extension],
-    cmdclass={"build_ext": build_ctypes_ext},
+    cmdclass={"build_ext": build_ctypes_ext, "bdist_wheel": bdist_ctypes_wheel},
 )
